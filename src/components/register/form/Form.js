@@ -37,6 +37,7 @@ export default function Form() {
 
   const toSend = event => {
     event.preventDefault()
+    if (loading === true) return
     setLoading(true)
     const { name, email, password, confirmPassword } = input
 

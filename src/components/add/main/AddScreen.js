@@ -1,12 +1,14 @@
 import { useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Container, Content, H2 } from './styles'
 import Form from '../form/Form'
 import { UserContext } from '../../../context/auth'
 
-export default function LoginScreen() {
+export default function AddScreen() {
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
+  const location = useLocation()
+  console.log(location)
 
   useEffect(() => {
     const tokenStringify = localStorage.getItem('token')
