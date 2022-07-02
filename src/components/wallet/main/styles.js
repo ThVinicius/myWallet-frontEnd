@@ -29,8 +29,7 @@ const Box1 = styled.div`
   }
 
   ion-icon {
-    width: 23px;
-    height: 24px;
+    font-size: 35px;
     color: #ffffff;
     cursor: pointer;
   }
@@ -90,11 +89,39 @@ const Box3 = styled.div`
 `
 
 const Wallet = styled(Box2)`
-  padding: 3.44vh 11px;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 9px;
-  overflow-y: auto;
+  justify-content: space-between;
+
+  & > div:first-child {
+    width: 326px;
+    height: 62.4vh;
+    padding: 1.44vh 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    overflow-y: auto;
+  }
 `
 
-export { Container, Content, Box1, Box2, Box3, Wallet }
+const Balance = styled.div`
+  width: 326px;
+  height: 4.49vh;
+  padding: 0 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h6 {
+    font: normal 700 17px 'Raleway', cursive;
+    line-height: 20px;
+    color: #000000;
+  }
+
+  h5 {
+    font: normal 400 17px 'Roboto', sans-serif;
+    line-height: 20px;
+    color: ${props => props.valueColor};
+  }
+`
+
+export { Container, Content, Box1, Box2, Box3, Wallet, Balance }

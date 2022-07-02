@@ -48,7 +48,7 @@ export default function Form() {
       return
     }
 
-    const URL = 'http://localhost:5000/register'
+    const URL = 'https://my-wallet-vinicius.herokuapp.com/register'
 
     const toSend = { name, email, password }
 

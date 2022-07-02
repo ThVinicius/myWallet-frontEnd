@@ -3,17 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../../../context/auth'
 import logout from '../../../shared/logout'
+import valueMask from '../../../shared/maskValue'
 import UserRecords from '../userRecords/UserRecords'
 import { ThreeCircles } from 'react-loader-spinner'
-import { Container, Content, Box1, Box2, Box3, Wallet } from './styles'
+import { Container, Content, Box1, Box2, Box3, Wallet, Balance } from './styles'
 
 export default function WalletScreen() {
-  const [userData, setUserData] = useState(undefined)
+  const [userData, setUserData] = useState({
+    operations: undefined,
+    name: undefined,
+    totalBalance: undefined,
+    valueColor: undefined
+  })
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
   useEffect(() => {
-    const URL = 'http://localhost:5000/wallet'
+    const URL = 'https://my-wallet-vinicius.herokuapp.com/wallet'
     const config = {
       headers: { Authorization: `Bearer ${user.token}` }
     }
@@ -21,13 +27,39 @@ export default function WalletScreen() {
     const promise = axios.get(URL, config)
 
     promise
-      .then(res => {
-        setUserData(res.data)
+      .then(({ data }) => {
+        userData.operations = data.operations
+        userData.name = data.name
+
+        balance()
+
+        setUserData({ ...userData })
       })
-      .catch(() => {
+      .catch(res => {
         logout(user, navigate)
       })
   }, [])
+
+  const balance = () => {
+    let totalInput = 0
+    let totalExit = 0
+
+    for (let { value, operation } of userData.operations) {
+      value = parseFloat(value.replace(',', '.'))
+
+      if (operation === 'exit') {
+        totalExit += value
+      } else {
+        totalInput += value
+      }
+    }
+
+    userData.valueColor = totalExit > totalInput ? '#C70000' : '#03AC00'
+
+    userData.totalBalance = valueMask(
+      Math.abs(totalExit - totalInput).toFixed(2)
+    )
+  }
 
   const redirectAdd = type => {
     navigate('/add', { state: type })
@@ -43,24 +75,32 @@ export default function WalletScreen() {
     }
 
     return (
-      <Wallet>
-        {userData.operations.map(
-          ({ value, description, operation, time }, index) => (
-            <UserRecords
-              value={value}
-              description={description}
-              type={operation}
-              time={time}
-              key={index}
-            />
-          )
-        )}
-      </Wallet>
+      <>
+        <Wallet>
+          <div>
+            {userData.operations.map(
+              ({ value, description, operation, time }, index) => (
+                <UserRecords
+                  value={value}
+                  description={description}
+                  type={operation}
+                  time={time}
+                  key={index}
+                />
+              )
+            )}
+          </div>
+          <Balance valueColor={userData.valueColor}>
+            <h6>SALDO</h6>
+            <h5>{userData.totalBalance}</h5>
+          </Balance>
+        </Wallet>
+      </>
     )
   }
 
   const loadingScreen = () => {
-    if (userData === undefined) {
+    if (userData.operations === undefined) {
       return (
         <ThreeCircles
           color="white"

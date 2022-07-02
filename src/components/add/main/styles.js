@@ -25,6 +25,14 @@ const Content = styled.div`
 const Box = styled.div`
   width: 326px;
   margin-top: 3.74vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ion-icon {
+    font-size: 37px;
+    color: white;
+  }
 `
 
 export { Container, Content, Box }

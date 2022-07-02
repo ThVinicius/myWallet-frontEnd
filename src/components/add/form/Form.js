@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../../../context/auth'
@@ -30,6 +30,8 @@ export default function Form({ type }) {
     event.preventDefault()
     if (loading === true) return
 
+    setLoading(true)
+
     let value = parseFloat(
       valueMask(input.value)
         .replace('R$ ', '')
@@ -38,19 +40,22 @@ export default function Form({ type }) {
     ).toFixed(2)
 
     if (isNaN(value)) {
+      setLoading(false)
+
       alert('Insira um valor válido')
       return
     } else if (value <= 0) {
+      setLoading(false)
+
       alert('Insira um valor maior que 0')
       return
     }
-    setLoading(true)
 
     value = value.replace('.', ',')
 
     const operation = type === 'entrada' ? 'input' : 'exit'
 
-    const URL = 'http://localhost:5000/add'
+    const URL = 'https://my-wallet-vinicius.herokuapp.com/add'
 
     const body = { value, description: input.description, operation }
 
@@ -62,19 +67,23 @@ export default function Form({ type }) {
       .then(() => {
         setInput({ value: '', description: '' })
 
+        setLoading(false)
+
         alert(`${type} cadastrada com sucesso!`)
       })
       .catch(res => {
         if (res.response.status === 400) {
+          setLoading(false)
+
           alert('Os dados estão incorretos!')
         } else {
+          setLoading(false)
+
           alert('Sua sessão expirou.\nFaça o login novamente')
 
           return logout(user, navigate)
         }
       })
-
-    setLoading(false)
   }
 
   return (

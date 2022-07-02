@@ -29,7 +29,7 @@ export default function Form() {
     if (loading === true) return
     setLoading(true)
 
-    const URL = 'http://localhost:5000/login'
+    const URL = 'https://my-wallet-vinicius.herokuapp.com/login'
 
     const promise = axios.post(URL, input)
 
