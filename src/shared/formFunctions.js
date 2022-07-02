@@ -1,5 +1,10 @@
 import { ThreeDots } from 'react-loader-spinner'
 
+const spinnerLoadingAdd = (loading, type) => {
+  if (loading === false) return `Nova ${type}`
+  return <ThreeDots color="#FFFFFF" height={20} width={99} />
+}
+
 const spinnerLoading = loading => {
   if (loading === false) return 'Entrar'
   return <ThreeDots color="#FFFFFF" height={20} width={99} />
@@ -20,4 +25,10 @@ const opacityButton = loading => {
   return '0.7'
 }
 
-export { spinnerLoading, disableInput, inputColorLoading, opacityButton }
+export {
+  spinnerLoadingAdd,
+  spinnerLoading,
+  disableInput,
+  inputColorLoading,
+  opacityButton
+}

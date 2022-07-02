@@ -16,7 +16,6 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
 `
-
 const Box1 = styled.div`
   width: 326px;
   height: 11.39vh;
@@ -46,7 +45,7 @@ const Box2 = styled.div`
   justify-content: center;
   align-items: center;
 
-  p {
+  h2 {
     width: 180px;
     height: 46px;
     font: normal 400 20px 'Raleway', cursive;
@@ -90,4 +89,12 @@ const Box3 = styled.div`
   }
 `
 
-export { Container, Content, Box1, Box2, Box3 }
+const Wallet = styled(Box2)`
+  padding: 3.44vh 11px;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 9px;
+  overflow-y: auto;
+`
+
+export { Container, Content, Box1, Box2, Box3, Wallet }

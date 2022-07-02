@@ -2,65 +2,79 @@ import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../../../context/auth'
+import logout from '../../../shared/logout'
+import valueMask from '../../../shared/maskValue'
 import { Container } from './styles'
 import {
-  spinnerLoading,
+  spinnerLoadingAdd,
   disableInput,
   inputColorLoading,
   opacityButton
-} from './functions'
+} from '../../../shared/formFunctions'
 
-export default function Form() {
-  const [input, setInput] = useState({ email: '', password: '' })
+export default function Form({ type }) {
+  const [input, setInput] = useState({ value: '', description: '' })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
 
-  const hanleChangeInputEmail = e => {
-    setInput({ ...input, email: e })
+  const hanleChangeInputValue = e => {
+    setInput({ ...input, value: e })
   }
 
-  const hanleChangeInputPassword = e => {
-    setInput({ ...input, password: e })
+  const hanleChangeInputDescription = e => {
+    setInput({ ...input, description: e })
   }
 
   const toSend = event => {
     event.preventDefault()
     if (loading === true) return
+
+    let value = parseFloat(
+      valueMask(input.value)
+        .replace('R$ ', '')
+        .replaceAll('.', '')
+        .replace(',', '.')
+    ).toFixed(2)
+
+    if (isNaN(value)) {
+      alert('Insira um valor válido')
+      return
+    } else if (value <= 0) {
+      alert('Insira um valor maior que 0')
+      return
+    }
     setLoading(true)
 
-    const URL = 'http://localhost:5000/login'
+    value = value.replace('.', ',')
 
-    const promise = axios.post(URL, input)
+    const operation = type === 'entrada' ? 'input' : 'exit'
+
+    const URL = 'http://localhost:5000/add'
+
+    const body = { value, description: input.description, operation }
+
+    const headers = { headers: { Authorization: `Bearer ${user.token}` } }
+
+    const promise = axios.post(URL, body, headers)
 
     promise
-      .then(res => {
-        user.token = res.data.token
+      .then(() => {
+        setInput({ value: '', description: '' })
 
-        const tokenstrinfy = JSON.stringify(user.token)
-        localStorage.setItem('token', tokenstrinfy)
-
-        navigate('/wallet')
+        alert(`${type} cadastrada com sucesso!`)
       })
       .catch(res => {
-        setLoading(false)
-        switch (true) {
-          case res.response.status === 401:
-            alert('E-mail ou senha inválidos')
-            break
+        if (res.response.status === 400) {
+          alert('Os dados estão incorretos!')
+        } else {
+          alert('Sua sessão expirou.\nFaça o login novamente')
 
-          case res.response.status === 400:
-            alert(res.message)
-            break
-
-          case res.response.status === 500:
-            alert(res.message)
-            break
-
-          default:
-            break
+          return logout(user, navigate)
         }
       })
+
+    setLoading(false)
   }
 
   return (
@@ -70,22 +84,24 @@ export default function Form() {
       onSubmit={toSend}
     >
       <input
-        type="email"
-        placeholder="E-mail"
+        type="text"
+        placeholder="Valor"
+        maxLength={16}
         required
         disabled={disableInput(loading)}
-        value={input.email}
-        onChange={e => hanleChangeInputEmail(e.target.value)}
+        value={valueMask(input.value)}
+        onChange={e => hanleChangeInputValue(e.target.value)}
       />
       <input
-        type="password"
-        placeholder="Senha"
+        type="text"
+        placeholder="Descrição"
+        maxLength={33}
         required
         disabled={disableInput(loading)}
-        value={input.password}
-        onChange={e => hanleChangeInputPassword(e.target.value)}
+        value={input.description}
+        onChange={e => hanleChangeInputDescription(e.target.value)}
       />
-      <button type="submit">{spinnerLoading(loading)}</button>
+      <button type="submit">{spinnerLoadingAdd(loading, type)}</button>
     </Container>
   )
 }

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   width: 100vw;
@@ -15,18 +14,17 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   h1 {
-    font: normal 400 32px 'Saira Stencil One', cursive;
+    font: normal 700 26px 'Raleway', sans-serif;
     line-height: 50px;
     color: #ffffff;
   }
 `
-const H2 = styled(Link)`
-  font: normal 700 15px 'Raleway', sans-serif;
-  line-height: 18px;
-  color: #ffffff;
+
+const Box = styled.div`
+  width: 326px;
+  margin-top: 3.74vh;
 `
 
-export { Container, Content, H2 }
+export { Container, Content, Box }

@@ -1,32 +1,17 @@
-import { useEffect, useContext } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Container, Content, H2 } from './styles'
+import { useLocation } from 'react-router-dom'
+import { Container, Content, Box } from './styles'
 import Form from '../form/Form'
-import { UserContext } from '../../../context/auth'
 
 export default function AddScreen() {
-  const navigate = useNavigate()
-  const { user } = useContext(UserContext)
-  const location = useLocation()
-  console.log(location)
-
-  useEffect(() => {
-    const tokenStringify = localStorage.getItem('token')
-    const token = JSON.parse(tokenStringify)
-
-    if (token !== null) {
-      user.token = token
-
-      navigate('/wallet')
-    }
-  }, [])
+  const { state } = useLocation()
 
   return (
     <Container>
       <Content>
-        <h1>MyWallet</h1>
-        <Form />
-        <H2 to="/register">Primeira vez? Cadastre-se!</H2>
+        <Box>
+          <h1>Nova {state}</h1>
+        </Box>
+        <Form type={state} />
       </Content>
     </Container>
   )

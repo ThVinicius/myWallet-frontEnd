@@ -8,7 +8,7 @@ import {
   disableInput,
   inputColorLoading,
   opacityButton
-} from './functions'
+} from '../../../shared/formFunctions'
 
 export default function Form() {
   const [input, setInput] = useState({ email: '', password: '' })
