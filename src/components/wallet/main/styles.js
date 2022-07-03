@@ -98,7 +98,7 @@ const Wallet = styled(Box2)`
     padding: 1.44vh 11px;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 2.7vh;
     overflow-y: auto;
   }
 `

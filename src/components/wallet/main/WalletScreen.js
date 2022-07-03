@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../../../context/auth'
 import logout from '../../../shared/logout'
-import valueMask from '../../../shared/maskValue'
 import UserRecords from '../userRecords/UserRecords'
 import { ThreeCircles } from 'react-loader-spinner'
+import { balance, redirectAdd } from './functions'
 import { Container, Content, Box1, Box2, Box3, Wallet, Balance } from './styles'
 
 export default function WalletScreen() {
   const [userData, setUserData] = useState({
     operations: undefined,
     name: undefined,
+    id: undefined,
     totalBalance: undefined,
     valueColor: undefined
   })
@@ -30,8 +31,9 @@ export default function WalletScreen() {
       .then(({ data }) => {
         userData.operations = data.operations
         userData.name = data.name
+        userData.id = data.id
 
-        balance()
+        balance(userData)
 
         setUserData({ ...userData })
       })
@@ -39,31 +41,6 @@ export default function WalletScreen() {
         logout(user, navigate)
       })
   }, [])
-
-  const balance = () => {
-    let totalInput = 0
-    let totalExit = 0
-
-    for (let { value, operation } of userData.operations) {
-      value = parseFloat(value.replace(',', '.'))
-
-      if (operation === 'exit') {
-        totalExit += value
-      } else {
-        totalInput += value
-      }
-    }
-
-    userData.valueColor = totalExit > totalInput ? '#C70000' : '#03AC00'
-
-    userData.totalBalance = valueMask(
-      Math.abs(totalExit - totalInput).toFixed(2)
-    )
-  }
-
-  const redirectAdd = type => {
-    navigate('/add', { state: type })
-  }
 
   const userWallet = () => {
     if (userData.operations.length === 0) {
@@ -85,6 +62,10 @@ export default function WalletScreen() {
                   description={description}
                   type={operation}
                   time={time}
+                  userData={userData}
+                  setUserData={setUserData}
+                  user={user}
+                  index={index}
                   key={index}
                 />
               )
@@ -121,11 +102,11 @@ export default function WalletScreen() {
         </Box1>
         {userWallet()}
         <Box3>
-          <div onClick={() => redirectAdd('entrada')}>
+          <div onClick={() => redirectAdd('entrada', navigate)}>
             <ion-icon name="add-circle-outline"></ion-icon>
             <h6>Nova entrada</h6>
           </div>
-          <div onClick={() => redirectAdd('saída')}>
+          <div onClick={() => redirectAdd('saída', navigate)}>
             <ion-icon name="remove-circle-outline"></ion-icon>
             <h6>Nova saída</h6>
           </div>

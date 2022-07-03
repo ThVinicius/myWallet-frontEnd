@@ -8,6 +8,7 @@ const Container = styled.div`
 
   span {
     display: flex;
+    gap: 5px;
     align-items: center;
   }
 
@@ -18,7 +19,6 @@ const Container = styled.div`
   }
 
   h4 {
-    margin-left: 5px;
     font: normal 400 16px 'Raleway', cursive;
     line-height: 19px;
     color: #000000;
@@ -28,10 +28,20 @@ const Container = styled.div`
     font: normal 400 16px 'Roboto', sans-serif;
     line-height: 19px;
     color: ${props => props.color};
-    width: 161.8px;
+    /* width: 161.8px; */
     display: flex;
     justify-content: flex-end;
     word-wrap: break-word;
+  }
+
+  h6 {
+    font: normal 400 16px 'Raleway', cursive;
+    cursor: pointer;
+  }
+
+  h6:hover {
+    color: #c70000;
+    font-size: 24px;
   }
 `
 

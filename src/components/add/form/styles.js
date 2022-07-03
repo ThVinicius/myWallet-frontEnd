@@ -16,5 +16,8 @@ const Container = styled.form`
     opacity: ${props => props.opacity};
   }
 `
+const Input = styled.input`
+  color: ${props => props.valueColor};
+`
 
-export { Container }
+export { Container, Input }

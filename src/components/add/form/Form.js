@@ -1,30 +1,27 @@
-import { useState, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../../context/auth'
 import logout from '../../../shared/logout'
 import valueMask from '../../../shared/maskValue'
-import { Container } from './styles'
+import { Container, Input } from './styles'
 import {
   spinnerLoadingAdd,
   disableInput,
   inputColorLoading,
   opacityButton
 } from '../../../shared/formFunctions'
+import {
+  valueColor,
+  hanleChangeInputValue,
+  hanleChangeInputDescription
+} from './functions'
 
 export default function Form({ type }) {
   const [input, setInput] = useState({ value: '', description: '' })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
-
-  const hanleChangeInputValue = e => {
-    setInput({ ...input, value: e })
-  }
-
-  const hanleChangeInputDescription = e => {
-    setInput({ ...input, description: e })
-  }
 
   const toSend = event => {
     event.preventDefault()
@@ -90,16 +87,19 @@ export default function Form({ type }) {
     <Container
       color={inputColorLoading(loading)}
       opacity={opacityButton(loading)}
-      onSubmit={toSend}
+      onSubmit={() =>
+        toSend(loading, setLoading, input, setInput, type, user, navigate)
+      }
     >
-      <input
+      <Input
+        valueColor={valueColor(type)}
         type="text"
         placeholder="Valor"
         maxLength={16}
         required
         disabled={disableInput(loading)}
         value={valueMask(input.value)}
-        onChange={e => hanleChangeInputValue(e.target.value)}
+        onChange={e => hanleChangeInputValue(e.target.value, input, setInput)}
       />
       <input
         type="text"
@@ -108,7 +108,9 @@ export default function Form({ type }) {
         required
         disabled={disableInput(loading)}
         value={input.description}
-        onChange={e => hanleChangeInputDescription(e.target.value)}
+        onChange={e =>
+          hanleChangeInputDescription(e.target.value, input, setInput)
+        }
       />
       <button type="submit">{spinnerLoadingAdd(loading, type)}</button>
     </Container>
