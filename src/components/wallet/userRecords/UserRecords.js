@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useState } from 'react'
 import { Container } from './styles'
 import valueMask from '../../../shared/maskValue'
 import totalBalance from '../../../shared/totalBalance'
 import logout from '../../../shared/logout'
-import axios from 'axios'
+import { color, verifyIntenger, loadingSpinner } from './functions'
 
 export default function UserRecords({
   value,
@@ -13,15 +15,12 @@ export default function UserRecords({
   userData,
   setUserData,
   user,
-  index
+  index,
+  id
 }) {
   const navigate = useNavigate()
 
-  const color = () => {
-    if (type === 'exit') return '#C70000'
-
-    return '#03AC00'
-  }
+  const [loading, setLoading] = useState({ state: false })
 
   const del = () => {
     const confirm = window.confirm(
@@ -29,49 +28,43 @@ export default function UserRecords({
     )
 
     if (confirm) {
-      userData.operations.splice(index, 1)
+      setLoading({ ...loading, state: true })
 
-      const { total, valueColor } = totalBalance(userData.operations)
+      const URL = `${process.env.REACT_APP_API_URL}/delete/${id}`
 
-      userData.totalBalance = valueMask(Math.abs(total).toFixed(2))
+      const config = { headers: { Authorization: `Bearer ${user.token}` } }
 
-      userData.valueColor = valueColor
+      const promise = axios.delete(URL, config)
 
-      setUserData({ ...userData })
+      promise
+        .then(() => {
+          userData.operations.splice(index, 1)
 
-      // const URL = `https://my-wallet-vinicius.herokuapp.com/delete/${id}`
+          const { total, valueColor } = totalBalance(userData.operations)
 
-      // const config = { headers: { Authorization: `Bearer ${user.token}` } }
+          userData.totalBalance = valueMask(Math.abs(total).toFixed(2))
 
-      // const promise = axios.delete(URL, config)
+          userData.valueColor = valueColor
 
-      // promise
-      //   .then(() => {
-      // userData.operations.splice(index, 1)
+          setLoading({ ...loading, state: false })
 
-      // const { total, valueColor } = totalBalance(userData.operations)
-
-      // userData.totalBalance = valueMask(Math.abs(total).toFixed(2))
-
-      // userData.valueColor = valueColor
-
-      // setUserData({ ...userData })
-      //   })
-      //   .catch(() => {
-      //     logout(user, navigate)
-      //   })
+          setUserData({ ...userData })
+        })
+        .catch(() => {
+          logout(user, navigate)
+        })
     }
   }
 
   return (
-    <Container color={color()}>
+    <Container color={color(type)}>
       <span>
         <h3>{time}</h3>
         <h4>{description}</h4>
       </span>
       <span>
-        <h5>{valueMask(value)}</h5>
-        <h6 onClick={del}>x</h6>
+        <h5>{valueMask(`${verifyIntenger(value)}`)}</h5>
+        {loadingSpinner(loading, del)}
       </span>
     </Container>
   )

@@ -3,7 +3,7 @@ const totalBalance = array => {
   let totalExit = 0
 
   for (let { value, operation } of array) {
-    value = parseFloat(value.replace(',', '.'))
+    // value = parseFloat(value.replace(',', '.'))
 
     if (operation === 'exit') {
       totalExit += value

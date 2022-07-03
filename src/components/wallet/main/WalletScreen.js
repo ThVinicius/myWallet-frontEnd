@@ -12,7 +12,6 @@ export default function WalletScreen() {
   const [userData, setUserData] = useState({
     operations: undefined,
     name: undefined,
-    id: undefined,
     totalBalance: undefined,
     valueColor: undefined
   })
@@ -20,7 +19,7 @@ export default function WalletScreen() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const URL = 'https://my-wallet-vinicius.herokuapp.com/wallet'
+    const URL = `${process.env.REACT_APP_API_URL}/wallet`
     const config = {
       headers: { Authorization: `Bearer ${user.token}` }
     }
@@ -31,7 +30,6 @@ export default function WalletScreen() {
       .then(({ data }) => {
         userData.operations = data.operations
         userData.name = data.name
-        userData.id = data.id
 
         balance(userData)
 
@@ -56,7 +54,7 @@ export default function WalletScreen() {
         <Wallet>
           <div>
             {userData.operations.map(
-              ({ value, description, operation, time }, index) => (
+              ({ value, description, operation, time, id }, index) => (
                 <UserRecords
                   value={value}
                   description={description}
@@ -65,6 +63,7 @@ export default function WalletScreen() {
                   userData={userData}
                   setUserData={setUserData}
                   user={user}
+                  id={id}
                   index={index}
                   key={index}
                 />

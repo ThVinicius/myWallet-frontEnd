@@ -34,7 +34,7 @@ export default function Form({ type }) {
         .replace('R$ ', '')
         .replaceAll('.', '')
         .replace(',', '.')
-    ).toFixed(2)
+    )
 
     if (isNaN(value)) {
       setLoading(false)
@@ -48,11 +48,9 @@ export default function Form({ type }) {
       return
     }
 
-    value = value.replace('.', ',')
-
     const operation = type === 'entrada' ? 'input' : 'exit'
 
-    const URL = 'https://my-wallet-vinicius.herokuapp.com/add'
+    const URL = `${process.env.REACT_APP_API_URL}/add`
 
     const body = { value, description: input.description, operation }
 
@@ -87,9 +85,7 @@ export default function Form({ type }) {
     <Container
       color={inputColorLoading(loading)}
       opacity={opacityButton(loading)}
-      onSubmit={() =>
-        toSend(loading, setLoading, input, setInput, type, user, navigate)
-      }
+      onSubmit={toSend}
     >
       <Input
         valueColor={valueColor(type)}

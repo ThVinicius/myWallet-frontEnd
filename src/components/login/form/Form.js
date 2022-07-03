@@ -29,7 +29,7 @@ export default function Form() {
     if (loading === true) return
     setLoading(true)
 
-    const URL = 'https://my-wallet-vinicius.herokuapp.com/login'
+    const URL = `${process.env.REACT_APP_API_URL}/login`
 
     const promise = axios.post(URL, input)
 

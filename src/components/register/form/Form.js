@@ -48,7 +48,7 @@ export default function Form() {
       return
     }
 
-    const URL = 'https://my-wallet-vinicius.herokuapp.com/register'
+    const URL = `${process.env.REACT_APP_API_URL}/register`
 
     const toSend = { name, email, password }
 
