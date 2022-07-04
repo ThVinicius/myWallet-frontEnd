@@ -111,7 +111,7 @@ export default function Form({ balance, type, value, description, id }) {
       />
       <input
         type="text"
-        placeholder="Descrição    (max: 33 caracteres)"
+        placeholder="Descrição   max: 33 caracteres"
         maxLength={33}
         required
         disabled={disableInput(loading)}

@@ -133,6 +133,7 @@ const Wallet = styled(Box2)`
     flex-direction: column;
     gap: 2.7vh;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   @media (max-width: 420px) {
