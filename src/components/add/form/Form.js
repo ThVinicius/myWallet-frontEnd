@@ -17,8 +17,8 @@ import {
   hanleChangeInputDescription
 } from './functions'
 
-export default function Form({ type }) {
-  const [input, setInput] = useState({ value: '', description: '' })
+export default function Form({ balance, type, value, description, id }) {
+  const [input, setInput] = useState({ value, description })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
@@ -48,15 +48,23 @@ export default function Form({ type }) {
       return
     }
 
-    const operation = type === 'entrada' ? 'input' : 'exit'
+    const operation = balance === 'entrada' ? 'input' : 'exit'
 
-    const URL = `${process.env.REACT_APP_API_URL}/add`
+    const aux = type === 'Nova' ? '/add' : `/edit/${id}`
+
+    const URL = `${process.env.REACT_APP_API_URL}${aux}`
 
     const body = { value, description: input.description, operation }
 
     const headers = { headers: { Authorization: `Bearer ${user.token}` } }
 
-    const promise = axios.post(URL, body, headers)
+    let promise
+
+    if (type === 'Nova') {
+      promise = axios.post(URL, body, headers)
+    } else {
+      promise = axios.put(URL, body, headers)
+    }
 
     promise
       .then(() => {
@@ -64,7 +72,11 @@ export default function Form({ type }) {
 
         setLoading(false)
 
-        alert(`${type} cadastrada com sucesso!`)
+        const aux = type === 'Nova' ? 'cadastrada' : 'atualizada'
+
+        alert(`${balance} ${aux} com sucesso!`)
+
+        if (type === 'Editar') return navigate('/wallet')
       })
       .catch(res => {
         if (res.response.status === 400) {
@@ -88,7 +100,7 @@ export default function Form({ type }) {
       onSubmit={toSend}
     >
       <Input
-        valueColor={valueColor(type)}
+        valueColor={valueColor(balance)}
         type="text"
         placeholder="Valor"
         maxLength={16}
@@ -99,7 +111,7 @@ export default function Form({ type }) {
       />
       <input
         type="text"
-        placeholder="Descrição"
+        placeholder="Descrição    (max: 33 caracteres)"
         maxLength={33}
         required
         disabled={disableInput(loading)}
@@ -108,7 +120,7 @@ export default function Form({ type }) {
           hanleChangeInputDescription(e.target.value, input, setInput)
         }
       />
-      <button type="submit">{spinnerLoadingAdd(loading, type)}</button>
+      <button type="submit">{spinnerLoadingAdd(loading, balance, type)}</button>
     </Container>
   )
 }

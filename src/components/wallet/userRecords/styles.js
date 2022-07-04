@@ -22,6 +22,7 @@ const Container = styled.div`
     font: normal 400 16px 'Raleway', cursive;
     line-height: 19px;
     color: #000000;
+    cursor: pointer;
   }
 
   h5 {

@@ -28,7 +28,7 @@ export default function WalletScreen() {
 
     promise
       .then(({ data }) => {
-        userData.operations = data.operations
+        userData.operations = data.operations.reverse()
         userData.name = data.name
 
         balance(userData)
@@ -101,11 +101,30 @@ export default function WalletScreen() {
         </Box1>
         {userWallet()}
         <Box3>
-          <div onClick={() => redirectAdd('entrada', navigate)}>
+          <div
+            onClick={() =>
+              redirectAdd(
+                {
+                  type: 'Nova',
+                  balance: 'entrada',
+                  value: '',
+                  description: ''
+                },
+                navigate
+              )
+            }
+          >
             <ion-icon name="add-circle-outline"></ion-icon>
             <h6>Nova entrada</h6>
           </div>
-          <div onClick={() => redirectAdd('saída', navigate)}>
+          <div
+            onClick={() =>
+              redirectAdd(
+                { type: 'Nova', balance: 'saída', value: '', description: '' },
+                navigate
+              )
+            }
+          >
             <ion-icon name="remove-circle-outline"></ion-icon>
             <h6>Nova saída</h6>
           </div>

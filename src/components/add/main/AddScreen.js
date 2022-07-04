@@ -3,18 +3,26 @@ import { Container, Content, Box } from './styles'
 import Form from '../form/Form'
 
 export default function AddScreen() {
-  const { state } = useLocation()
+  const { type, balance, value, description, id } = useLocation().state
 
   return (
     <Container>
       <Content>
         <Box>
-          <h1>Nova {state}</h1>
+          <h1>
+            {type} {balance}
+          </h1>
           <Link to={'/wallet'}>
             <ion-icon name="wallet-outline"></ion-icon>
           </Link>
         </Box>
-        <Form type={state} />
+        <Form
+          balance={balance}
+          type={type}
+          value={value}
+          description={description}
+          id={id}
+        />
       </Content>
     </Container>
   )

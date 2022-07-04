@@ -1,7 +1,9 @@
 import { ThreeDots } from 'react-loader-spinner'
 
-const spinnerLoadingAdd = (loading, type) => {
-  if (loading === false) return `Nova ${type}`
+const spinnerLoadingAdd = (loading, balance, type) => {
+  const aux = type === 'Nova' ? 'Salvar' : 'Atualizar'
+
+  if (loading === false) return `${aux} ${balance}`
   return <ThreeDots color="#FFFFFF" height={20} width={99} />
 }
 

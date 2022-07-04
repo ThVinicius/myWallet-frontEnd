@@ -89,8 +89,9 @@ export default function Form() {
     >
       <input
         type="text"
-        placeholder="Nome"
+        placeholder="Digite seu primeiro nome"
         required
+        maxLength={17}
         disabled={disableInput(loading)}
         value={input.name}
         onChange={e => hanleChangeInputName(e.target.value)}

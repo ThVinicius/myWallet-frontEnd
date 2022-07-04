@@ -56,11 +56,21 @@ export default function UserRecords({
     }
   }
 
+  const editRecord = () => {
+    const balance = type === 'exit' ? 'saída' : 'entrada'
+
+    const aux = value.toFixed(2)
+
+    navigate('/add', {
+      state: { type: 'Editar', balance, value: aux, description, id }
+    })
+  }
+
   return (
     <Container color={color(type)}>
       <span>
         <h3>{time}</h3>
-        <h4>{description}</h4>
+        <h4 onClick={editRecord}>{description}</h4>
       </span>
       <span>
         <h5>{valueMask(`${verifyIntenger(value)}`)}</h5>
