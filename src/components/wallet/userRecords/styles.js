@@ -44,6 +44,12 @@ const Container = styled.div`
     color: #c70000;
     font-size: 24px;
   }
+
+  @media (max-width: 420px) {
+    & {
+      width: 87.4vw;
+    }
+  }
 `
 
 export { Container }

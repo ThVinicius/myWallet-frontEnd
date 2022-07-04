@@ -6,6 +6,7 @@ const Container = styled.form`
   margin-top: 5.99vh;
   margin-bottom: 1.94vh;
   gap: 1.94vh;
+  align-items: center;
 
   input {
     background-color: ${props => props.color};

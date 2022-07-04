@@ -39,6 +39,16 @@ const GlobalStyle = createGlobalStyle`
   a{
     text-decoration: none;
   }
+
+  @media (max-width: 420px){
+    input{
+    width: 87.6vw;
+  }
+
+  button{
+    width: 87.6vw;
+  }
+  }
 `
 
 export default GlobalStyle

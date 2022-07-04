@@ -15,6 +15,10 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 420px) {
+    width: 100vw;
+  }
 `
 const Box1 = styled.div`
   width: 326px;
@@ -32,6 +36,10 @@ const Box1 = styled.div`
     font-size: 35px;
     color: #ffffff;
     cursor: pointer;
+  }
+
+  @media (max-width: 420px) {
+    width: 92.6vw;
   }
 `
 
@@ -51,6 +59,16 @@ const Box2 = styled.div`
     line-height: 23px;
     color: #868686;
     text-align: center;
+  }
+
+  @media (max-width: 420px) {
+    & {
+      width: 92.6vw;
+    }
+
+    h2 {
+      width: 42.85vw;
+    }
   }
 `
 
@@ -86,6 +104,21 @@ const Box3 = styled.div`
     line-height: 20px;
     color: #ffffff;
   }
+
+  @media (max-width: 420px) {
+    & {
+      width: 92.6vw;
+    }
+
+    div {
+      width: 44.6vw;
+    }
+
+    ion-icon {
+      width: 45px;
+      height: 45px;
+    }
+  }
 `
 
 const Wallet = styled(Box2)`
@@ -100,6 +133,12 @@ const Wallet = styled(Box2)`
     flex-direction: column;
     gap: 2.7vh;
     overflow-y: auto;
+  }
+
+  @media (max-width: 420px) {
+    & > div:first-child {
+      width: 92.6vw;
+    }
   }
 `
 
@@ -121,6 +160,12 @@ const Balance = styled.div`
     font: normal 400 17px 'Roboto', sans-serif;
     line-height: 20px;
     color: ${props => props.valueColor};
+  }
+
+  @media (max-width: 420px) {
+    & {
+      width: 92.6vw;
+    }
   }
 `
 

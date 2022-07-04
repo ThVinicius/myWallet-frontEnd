@@ -20,6 +20,10 @@ const Content = styled.div`
     line-height: 50px;
     color: #ffffff;
   }
+
+  @media (max-width: 420px) {
+    width: 100vw;
+  }
 `
 
 const Box = styled.div`
@@ -32,6 +36,10 @@ const Box = styled.div`
   ion-icon {
     font-size: 37px;
     color: white;
+  }
+
+  @media (max-width: 420px) {
+    width: 87.6vw;
   }
 `
 

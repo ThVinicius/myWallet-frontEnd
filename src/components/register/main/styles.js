@@ -22,6 +22,10 @@ const Content = styled.div`
     line-height: 50px;
     color: #ffffff;
   }
+
+  @media (max-width: 420px) {
+    width: 100vw;
+  }
 `
 const H2 = styled(Link)`
   font: normal 700 15px 'Raleway', sans-serif;
