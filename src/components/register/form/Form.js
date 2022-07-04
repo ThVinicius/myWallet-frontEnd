@@ -68,7 +68,9 @@ export default function Form() {
             return
 
           case res.response.status === 400:
-            alert(res.message)
+            alert(
+              'Os dados digitados estão fora do padrão aceito, por favor digite um email válido'
+            )
             return
 
           case res.response.status === 500:
